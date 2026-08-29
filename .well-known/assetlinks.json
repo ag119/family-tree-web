@@ -5,8 +5,7 @@
       "namespace": "android_app",
       "package_name": "com.nest.family_tree",
       "sha256_cert_fingerprints": [
-        "REPLACE_WITH_UPLOAD_KEY_SHA256",
-        "REPLACE_WITH_PLAY_APP_SIGNING_SHA256"
+        "12:D5:58:0E:D4:1D:6E:4C:97:BD:4B:4F:94:4C:83:B2:CD:10:82:CA:9E:B8:2C:47:BB:5E:66:FF:E4:12:46:9E"
       ]
     }
   }
