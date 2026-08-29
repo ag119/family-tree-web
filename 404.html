@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Family Tree</title>
+<script>
+  // GitHub Pages serves this for unknown paths. If it looks like an invite
+  // link (/…/i/?c=…), send it to the invite page keeping the query string;
+  // otherwise go to the site root.
+  (function () {
+    var p = location.pathname;
+    var iAt = p.indexOf('/i/');
+    if (iAt === -1 && /\/i$/.test(p)) iAt = p.length - 2;
+    if (iAt !== -1) {
+      location.replace(p.slice(0, iAt) + '/i/' + location.search);
+    } else {
+      location.replace(p.replace(/\/[^/]*$/, '/'));
+    }
+  })();
+</script>
+</head>
+<body></body>
+</html>

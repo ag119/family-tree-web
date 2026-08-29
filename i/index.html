@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>You're invited — Family Tree</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f6f5f1; color: #1c1c1c; display: grid; place-items: center; min-height: 100vh;
+  }
+  @media (prefers-color-scheme: dark) { body { background: #14140f; color: #f0f0ea; } }
+  .card {
+    max-width: 420px; margin: 24px; padding: 32px 28px; text-align: center;
+    background: rgba(255,255,255,0.65); border-radius: 20px;
+  }
+  @media (prefers-color-scheme: dark) { .card { background: rgba(255,255,255,0.06); } }
+  h1 { font-size: 1.4rem; margin: 12px 0 4px; }
+  p { line-height: 1.5; opacity: 0.85; }
+  .tree { font-size: 3rem; }
+  a.btn {
+    display: inline-block; margin-top: 20px; padding: 14px 22px; border-radius: 12px;
+    background: #3b6e58; color: #fff; text-decoration: none; font-weight: 600;
+  }
+  .hint { font-size: 0.8rem; margin-top: 18px; opacity: 0.6; }
+  code { background: rgba(128,128,128,0.15); padding: 2px 6px; border-radius: 6px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="tree">🌳</div>
+    <h1 id="headline">You've been invited to a family tree</h1>
+    <p id="sub">Install Family Tree, then this link opens straight to your place in the tree.</p>
+    <a class="btn" id="cta" href="#">Get it on Google Play</a>
+    <p class="hint" id="code-hint"></p>
+    <p class="hint">Already installed? <a id="open-app" href="#">Open in the app</a></p>
+  </div>
+
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var code = (params.get('c') || '').trim();
+    var pkg = 'com.nest.family_tree';
+
+    var playUrl = 'https://play.google.com/store/apps/details?id=' + pkg;
+    if (code) {
+      // Play Install Referrer carries the code through install.
+      playUrl += '&referrer=' + encodeURIComponent('invite_' + code);
+      document.getElementById('code-hint').textContent = 'Invite code: ' + code;
+    }
+    document.getElementById('cta').href = playUrl;
+
+    var self = location.href.split(/[?#]/)[0]; // this page, no query
+    var httpsLink = self + '?c=' + encodeURIComponent(code);
+    var openApp = document.getElementById('open-app');
+    openApp.href = httpsLink;
+
+    var isAndroid = /android/i.test(navigator.userAgent);
+    if (isAndroid && code) {
+      // Ask Android to open this exact https URL in the app if installed,
+      // otherwise fall back to the Play Store (with the invite referrer).
+      var host = location.host + location.pathname;
+      openApp.href =
+        'intent://' + host + '?c=' + encodeURIComponent(code) +
+        '#Intent;scheme=https;package=' + pkg +
+        ';S.browser_fallback_url=' + encodeURIComponent(playUrl) + ';end';
+    }
+    if (!isAndroid) {
+      document.getElementById('sub').textContent =
+        'Family Tree is on Android first. Open this link on your Android phone to join.';
+      document.getElementById('cta').textContent = 'View on Google Play';
+    }
+  })();
+</script>
+</body>
+</html>
